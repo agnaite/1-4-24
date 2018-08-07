@@ -19,7 +19,6 @@ class Die:
 
     def roll(self):
         """
-
         Rolls the die
 
         >>> die = Die(6)
@@ -31,20 +30,19 @@ class Die:
 
 
 class Roll:
+    """
+    Represents a roll in 1-4-24
+    """
 
     def __init__(self, rolls: Iterator[int]) -> None:
         self.rolls = rolls
 
-
     def is_qualified(self) -> bool:
         """
-
         Checks if roll qualifies (has a 1 and a 4)
 
         >>> Roll([1, 4, 6, 6, 6, 6]).is_qualified()
         True
-
-
         """
 
         return (1 in self.rolls) and (4 in self.rolls)
