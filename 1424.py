@@ -12,12 +12,21 @@ class Die:
         """
         Initiates a new die
 
+        # sets seed for testing
+        >>> random.seed(1424)
+
         >>> Die(6)
         <An unrolled, 6-sided Die>
 
-
+        # it contains state
         >>> die = Die(6)
-        >>> die.roll() <= 6
+        >>> die.roll()
+        1
+
+        >>> die
+        <A 6-sided Die with [1, 2, 3, 4, 5] sides that rolled 1>
+
+        >>> Die(6).roll() <= 6
         True
         """
 
