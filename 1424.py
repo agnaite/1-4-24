@@ -13,24 +13,33 @@ class Die:
         Initiates a new die
 
         >>> Die(6)
-        <Die with 6 sides>
+        <An unrolled, 6-sided Die>
         """
 
         self.sides = sides
+        self.choices = list(range(1, self.sides))
+        self.choice = -1
+
 
     def roll(self) -> int:
         """
         Rolls the die
 
         >>> die = Die(6)
-        >>> die.roll() <= 6
+        >>> die.roll() == die.roll()
         True
         """
 
-        return random.choice(range(1, self.sides))
+        if self.choice == -1:
+            self.choice = random.choice(self.choices)
+        return self.choice
+
 
     def __repr__(self) -> str:
-        return f'<Die with {self.sides} sides>'
+        if self.choice != -1:
+            return f'<A {self.sides}-sided Die with {self.choices} sides that rolled f{self.choice}>'
+        else:
+            return f'<An unrolled, {self.sides}-sided Die>'
 
 
 class Roll:
