@@ -12,7 +12,8 @@ class Die:
         """
         Initiates a new die
 
-        >>> die = Die(6)
+        >>> Die(6)
+        <Die with 6 sides>
         """
 
         self.sides = sides
@@ -27,6 +28,9 @@ class Die:
         """
 
         return random.choice(range(1, self.sides))
+
+    def __repr__(self):
+        return f'<Die with {self.sides} sides>'
 
 
 class Roll:
