@@ -26,16 +26,9 @@ def is_qualified(dice: Iterator[int]) -> bool:
     >>> is_qualified([1, 6, 6, 6, 6, 6])
     False
 
-    >>> is_qualified([])
-    Traceback (most recent call last):
-        ...
-    Exception: Not enough dice! You only had 0
     """
 
-    if not len(dice) == 6:
-        raise Exception(f'Not enough dice! You only had {len(dice)}')
-    else:
-        return (1 in dice) and (4 in dice)
+    return (1 in dice) and (4 in dice)
 
 
 def main():
