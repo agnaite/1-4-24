@@ -29,7 +29,7 @@ class Die:
 
         return random.choice(range(1, self.sides))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<Die with {self.sides} sides>'
 
 
