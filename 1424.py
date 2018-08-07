@@ -18,7 +18,7 @@ class Die:
 
         self.sides = sides
 
-    def roll(self):
+    def roll(self) -> int:
         """
         Rolls the die
 
