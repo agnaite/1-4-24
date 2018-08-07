@@ -42,7 +42,7 @@ class Die:
 
     def __repr__(self) -> str:
         if self.choice != -1:
-            return f'<A {self.sides}-sided Die with {self.choices} sides that rolled f{self.choice}>'
+            return f'<A {self.sides}-sided Die with {self.choices} sides that rolled {self.choice}>'
         else:
             return f'<An unrolled, {self.sides}-sided Die>'
 
