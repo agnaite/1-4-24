@@ -14,6 +14,11 @@ class Die:
 
         >>> Die(6)
         <An unrolled, 6-sided Die>
+
+
+        >>> die = Die(6)
+        >>> die.roll() <= 6
+        True
         """
 
         self.sides = sides
