@@ -35,6 +35,12 @@ class Roll:
     """
 
     def __init__(self, rolls: Iterator[int]) -> None:
+        """
+        Initiate the roll
+        >>> Roll([1, 4, 6, 6, 6, 6])
+        <Roll [1, 4, 6, 6, 6, 6]>
+        """
+
         self.rolls = rolls
 
     def is_qualified(self) -> bool:
@@ -46,3 +52,7 @@ class Roll:
         """
 
         return (1 in self.rolls) and (4 in self.rolls)
+
+    def __repr__(self) -> str:
+
+        return f'<Roll {self.rolls}>'
