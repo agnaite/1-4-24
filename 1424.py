@@ -26,6 +26,12 @@ def is_qualified(dice: Iterator[int]) -> bool:
     >>> is_qualified([1, 6, 6, 6, 6, 6])
     False
 
+    >>> is_qualified([1, 4])
+    True
+
+    >>> is_qualified([6, 6])
+    False
+
     """
 
     return (1 in dice) and (4 in dice)
