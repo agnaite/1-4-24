@@ -24,14 +24,14 @@ class Die:
         1
 
         >>> die
-        <A 6-sided Die with [1, 2, 3, 4, 5] sides that rolled 1>
+        <A 6-sided Die with [1, 2, 3, 4, 5, 6] sides that rolled 1>
 
         >>> Die(6).roll() <= 6
         True
         """
 
         self.sides = sides
-        self.choices = list(range(1, self.sides))
+        self.choices = list(range(1, self.sides+1))
         self.choice = -1
 
 
@@ -47,6 +47,44 @@ class Die:
         if self.choice == -1:
             self.choice = random.choice(self.choices)
         return self.choice
+
+
+    def bottoms(self) -> int:
+        """
+
+        Checks bottoms of a die (if rolled). Otherwise, raises an Exception
+
+        >>> die = Die(6)
+        >>> die.choices
+        [1, 2, 3, 4, 5, 6]
+
+        >>> die.choice = 6
+        >>> die.bottoms()
+        1
+
+        >>> die.choice = 5
+        >>> die.bottoms()
+        2
+
+        >>> die.choice = 4
+        >>> die.bottoms()
+        3
+
+        >>> die.choice = 3
+        >>> die.bottoms()
+        4
+
+        >>> die.choice = 2
+        >>> die.bottoms()
+        5
+
+        >>> die.choice = 1
+        >>> die.bottoms()
+        6
+
+        """
+
+        return self.choices[::-1][self.choices.index(self.choice)]
 
 
     def __repr__(self) -> str:
