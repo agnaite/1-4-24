@@ -5,11 +5,10 @@ import (
 )
 
 func TestGameplayPlay(t *testing.T) {
-
-	gp := Gameplay{
+	gp := &Gameplay{
 		State: StateBetting,
 		Die: Die{
-			Keeping: [6]int{},
+			Keeping: []int{},
 			Roll:    [6]int{},
 		},
 		Score:     0,

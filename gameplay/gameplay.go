@@ -2,7 +2,8 @@ package gameplay
 
 import (
 	"errors"
-	"sync"
+	"fmt"
+	"math/rand"
 )
 
 const (
@@ -10,12 +11,14 @@ const (
 	StateKeeping        = "keeping"
 	StateBetting        = "betting"
 	StateFinished       = "finished"
+
+	DieSides int = 6
 )
 
 type State string
 
 type Die struct {
-	Keeping [6]int
+	Keeping []int
 	Roll    [6]int
 }
 
@@ -25,8 +28,6 @@ type Gameplay struct {
 	Score     int
 	Qualified bool
 	Turns     int
-
-	wg sync.WaitGroup
 }
 
 func (gp *Gameplay) Play() error {
@@ -39,9 +40,12 @@ func (gp *Gameplay) Play() error {
 		gp.Roll()
 		gp.State = StateKeeping
 	case StateKeeping:
-		gp.Keep()
-		gp.UpdateScore()
-		if gp.Turns > 0 {
+		if gp.Turns < 3 {
+			gp.Keep([]int{0})
+		} else {
+			gp.Keep([]int{0, 1, 2})
+		}
+		if gp.isTurn() {
 			gp.State = StateRolling
 		} else {
 			gp.State = StateFinished
@@ -60,14 +64,28 @@ func (gp *Gameplay) Bet() error {
 }
 
 func (gp *Gameplay) Roll() error {
-	gp.Turns = gp.Turns - 1
+	for i := 0; i < gp.Turns; i++ {
+		gp.Die.Roll[i] = rand.Intn(DieSides) + 1
+
+		fmt.Printf("roll %d: %d\n", i+1, gp.Die.Roll[i])
+	}
 	return nil
 }
 
-func (gp *Gameplay) Keep() error {
+func (gp *Gameplay) Keep(die []int) error {
+	for _, k := range die {
+		gp.Die.Keeping = append(gp.Die.Keeping, gp.Die.Roll[k])
+		gp.Score = gp.Score + gp.Die.Roll[k]
+		gp.Turns = gp.Turns - 1
+	}
+
 	return nil
 }
 
 func (gp *Gameplay) UpdateScore() error {
 	return nil
+}
+
+func (gp *Gameplay) isTurn() bool {
+	return gp.Turns > 0
 }
