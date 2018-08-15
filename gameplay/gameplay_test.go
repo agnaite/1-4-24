@@ -8,8 +8,9 @@ func TestGameplayPlay(t *testing.T) {
 	gp := &Gameplay{
 		State: StateBetting,
 		Die: Die{
-			Keeping: []int{},
-			Roll:    [6]int{},
+			Keeping:    []int{},
+			Roll:       []int{},
+			Qualifiers: []int{},
 		},
 		Score:     0,
 		Qualified: false,

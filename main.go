@@ -12,8 +12,9 @@ func main() {
 	gameplay := &gameplay.Gameplay{
 		State: gameplay.StateBetting,
 		Die: gameplay.Die{
-			Keeping: []int{},
-			Roll:    [6]int{},
+			Keeping:    []int{},
+			Roll:       []int{},
+			Qualifiers: []int{},
 		},
 		Score:     0,
 		Qualified: false,
