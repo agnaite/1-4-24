@@ -1,9 +1,14 @@
 package gameplay
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"math/rand"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const (
@@ -41,7 +46,7 @@ func (gp *Gameplay) Play() error {
 		gp.Roll()
 		gp.State = StateKeeping
 	case StateKeeping:
-		gp.Keep([]int{0})
+		gp.Keep()
 
 		if gp.isTurn() {
 			gp.State = StateRolling
@@ -50,6 +55,7 @@ func (gp *Gameplay) Play() error {
 			// TODO: clean up func
 		}
 	case StateFinished:
+		gp.ShowStats()
 		return errors.New("finished")
 	default:
 		return errors.New("unknown state")
@@ -65,6 +71,7 @@ func (gp *Gameplay) Roll() error {
 	gp.Die.Roll = []int{}
 
 	for i := 0; i < gp.Turns; i++ {
+		rand.Seed(time.Now().UnixNano())
 		gp.Die.Roll = append(gp.Die.Roll, rand.Intn(DieSides)+1)
 
 		fmt.Printf("roll %d: %d\n", i+1, gp.Die.Roll[i])
@@ -72,8 +79,18 @@ func (gp *Gameplay) Roll() error {
 	return nil
 }
 
-func (gp *Gameplay) Keep(die []int) error {
-	for _, k := range die {
+func (gp *Gameplay) Keep() error {
+
+	dice, err := getDiceForKeeping()
+	if err != nil {
+		return err
+	}
+
+	if dice == nil {
+		return errors.New("need to choose at least one die.")
+	}
+
+	for _, k := range dice {
 		if !gp.Qualified && (gp.Die.Roll[k] == 1 || gp.Die.Roll[k] == 4) {
 			if err := gp.numQualify(gp.Die.Roll[k]); err != nil {
 				return err
@@ -88,11 +105,19 @@ func (gp *Gameplay) Keep(die []int) error {
 	return nil
 }
 
+func (gp *Gameplay) ShowStats() {
+	if gp.Qualified {
+		fmt.Println("\nYou have qualified!")
+	} else {
+		fmt.Println("\nYou did not qualify.")
+	}
+	fmt.Printf("Your final score is: %d\n", gp.Score)
+	fmt.Printf("Your dice are: %v %v\n", gp.Die.Keeping, gp.Die.Qualifiers)
+}
+
 func (gp *Gameplay) numQualify(num int) error {
 	if !numInSlice(num, gp.Die.Qualifiers) {
 		gp.Die.Qualifiers = append(gp.Die.Qualifiers, num)
-
-		fmt.Printf("qualifiers: %#v\n", gp.Die.Qualifiers)
 	}
 	if len(gp.Die.Qualifiers) == 2 {
 		gp.Qualified = true
@@ -111,4 +136,27 @@ func numInSlice(n int, slice []int) bool {
 		}
 	}
 	return false
+}
+
+func getDiceForKeeping() ([]int, error) {
+	dice := []int{}
+	reader := bufio.NewReader(os.Stdin)
+
+	for {
+		fmt.Print("Choose dice to keep (enter to exit): ")
+
+		text, _ := reader.ReadString('\n')
+		text = strings.TrimSuffix(text, "\n")
+		if text == "" {
+			return dice, nil
+		}
+
+		i, err := strconv.Atoi(text)
+		if err != nil {
+			return []int{}, err
+		}
+
+		dice = append(dice, i-1)
+	}
+	return []int{}, nil
 }

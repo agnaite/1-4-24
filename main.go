@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/agnaite/1-4-24/gameplay"
@@ -27,7 +26,6 @@ func main() {
 			break
 		}
 
-		fmt.Printf("gameplay=%#v\n", gameplay)
 		time.Sleep(time.Second)
 	}
 }
