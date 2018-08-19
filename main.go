@@ -1,9 +1,8 @@
 package main
 
 import (
+	"github.com/audy/1-4-24/gameplay"
 	"time"
-
-	"github.com/agnaite/1-4-24/gameplay"
 )
 
 func main() {
