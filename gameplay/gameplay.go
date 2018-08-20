@@ -14,7 +14,6 @@ import (
 const (
 	StateRolling  State = "rolling"
 	StateKeeping        = "keeping"
-	StateBetting        = "betting"
 	StateFinished       = "finished"
 
 	DieSides int = 6
@@ -29,19 +28,26 @@ type Die struct {
 }
 
 type Gameplay struct {
-	State     State
-	Die       Die
-	Score     int
-	Qualified bool
-	Turns     int
+	State State
+	Die   Die
+	Turns int
+}
+
+func New() *Gameplay {
+	return &Gameplay{
+		State: StateRolling,
+		Die: Die{
+			Keeping:    []int{},
+			Roll:       []int{},
+			Qualifiers: []int{},
+		},
+		Turns: 6,
+	}
 }
 
 func (gp *Gameplay) Play() error {
 
 	switch gp.State {
-	case StateBetting:
-		gp.Bet()
-		gp.State = StateRolling
 	case StateRolling:
 		gp.Roll()
 		gp.State = StateKeeping
@@ -52,7 +58,6 @@ func (gp *Gameplay) Play() error {
 			gp.State = StateRolling
 		} else {
 			gp.State = StateFinished
-			// TODO: clean up func
 		}
 	case StateFinished:
 		gp.ShowStats()
@@ -91,13 +96,12 @@ func (gp *Gameplay) Keep() error {
 	}
 
 	for _, k := range dice {
-		if !gp.Qualified && (gp.Die.Roll[k] == 1 || gp.Die.Roll[k] == 4) {
+		if !gp.isQualified() && (gp.Die.Roll[k] == 1 || gp.Die.Roll[k] == 4) {
 			if err := gp.numQualify(gp.Die.Roll[k]); err != nil {
 				return err
 			}
 		} else {
 			gp.Die.Keeping = append(gp.Die.Keeping, gp.Die.Roll[k])
-			gp.Score = gp.Score + gp.Die.Roll[k]
 		}
 		gp.Turns = gp.Turns - 1
 	}
@@ -105,13 +109,23 @@ func (gp *Gameplay) Keep() error {
 	return nil
 }
 
+func (gp *Gameplay) Score() int {
+	score := 0
+
+	for _, n := range gp.Die.Keeping {
+		score = score + n
+	}
+
+	return score
+}
+
 func (gp *Gameplay) ShowStats() {
-	if gp.Qualified {
+	if gp.isQualified() {
 		fmt.Println("\nYou have qualified!")
 	} else {
 		fmt.Println("\nYou did not qualify.")
 	}
-	fmt.Printf("Your final score is: %d\n", gp.Score)
+	fmt.Printf("Your final score is: %d\n", gp.Score())
 	fmt.Printf("Your dice are: %v %v\n", gp.Die.Keeping, gp.Die.Qualifiers)
 }
 
@@ -119,14 +133,20 @@ func (gp *Gameplay) numQualify(num int) error {
 	if !numInSlice(num, gp.Die.Qualifiers) {
 		gp.Die.Qualifiers = append(gp.Die.Qualifiers, num)
 	}
-	if len(gp.Die.Qualifiers) == 2 {
-		gp.Qualified = true
-	}
 	return nil
 }
 
 func (gp *Gameplay) isTurn() bool {
 	return gp.Turns > 0
+}
+
+func (gp *Gameplay) isQualified() bool {
+	switch len(gp.Die.Qualifiers) {
+	case 2:
+		return numInSlice(1, gp.Die.Qualifiers) && numInSlice(4, gp.Die.Qualifiers)
+	default:
+		return false
+	}
 }
 
 func numInSlice(n int, slice []int) bool {
