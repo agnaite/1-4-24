@@ -1,22 +1,27 @@
 package main
 
 import (
-	"time"
+	"fmt"
 
+	"github.com/agnaite/1-4-24/game"
 	"github.com/agnaite/1-4-24/gameplay"
 )
 
 func main() {
+	players := []string{"Agne", "Sam", "Austin"}
 
-	gameplay := gameplay.New()
+	playerMap := make(map[game.Player]*gameplay.Gameplay)
 
-	for {
-		err := gameplay.Play()
+	for _, player := range players {
+		playerMap[game.Player{Name: player, Balance: 10}] = gameplay.New()
+	}
 
-		if err != nil && err.Error() == "finished" {
-			break
-		}
+	game := game.Game{
+		GameplayPlayer: playerMap,
+		Pot:            0,
+	}
 
-		time.Sleep(time.Second)
+	if err := game.Start(); err != nil {
+		fmt.Println(err)
 	}
 }
