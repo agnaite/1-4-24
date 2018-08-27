@@ -86,7 +86,7 @@ func (gp *Gameplay) Roll() error {
 
 func (gp *Gameplay) Keep() error {
 
-	dice, err := getDiceForKeeping()
+	dice, err := gp.getDiceForKeeping()
 	if err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ func numInSlice(n int, slice []int) bool {
 	return false
 }
 
-func getDiceForKeeping() ([]int, error) {
+func (gp *Gameplay) getDiceForKeeping() ([]int, error) {
 	dice := []int{}
 	reader := bufio.NewReader(os.Stdin)
 
@@ -176,7 +176,20 @@ func getDiceForKeeping() ([]int, error) {
 			return []int{}, err
 		}
 
-		dice = append(dice, i-1)
+    if i == 0 {
+      fmt.Printf("roll 0 is not an option: \n")
+      continue
+    }
+
+    if i > len(gp.Die.Roll) {
+      if len(gp.Die.Roll) == 1 {
+        fmt.Printf("You only have 1 die to choose from: \n")
+      } else {
+        fmt.Printf("You only have %d dice to choose from: \n", len(gp.Die.Roll))
+      }
+    } else {
+      dice = append(dice, i-1)
+    }
 	}
 	return []int{}, nil
 }
