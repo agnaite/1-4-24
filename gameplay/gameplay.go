@@ -28,9 +28,10 @@ type Die struct {
 }
 
 type Gameplay struct {
-	State State
-	Die   Die
-	Turns int
+	State     State
+	Die       Die
+	Turns     int
+	Qualified bool
 }
 
 func New() *Gameplay {
@@ -41,7 +42,8 @@ func New() *Gameplay {
 			Roll:       []int{},
 			Qualifiers: []int{},
 		},
-		Turns: 6,
+		Turns:     6,
+		Qualified: false,
 	}
 }
 
@@ -68,10 +70,6 @@ func (gp *Gameplay) Play() error {
 	return nil
 }
 
-func (gp *Gameplay) Bet() error {
-	return nil
-}
-
 func (gp *Gameplay) Roll() error {
 	gp.Die.Roll = []int{}
 
@@ -81,6 +79,7 @@ func (gp *Gameplay) Roll() error {
 
 		fmt.Printf("roll %d: %d\n", i+1, gp.Die.Roll[i])
 	}
+	fmt.Println("")
 	return nil
 }
 
@@ -105,7 +104,7 @@ func (gp *Gameplay) Keep() error {
 		}
 		gp.Turns = gp.Turns - 1
 	}
-
+	fmt.Printf("\nYour dice are: %v %v\n\n", gp.Die.Keeping, gp.Die.Qualifiers)
 	return nil
 }
 
@@ -115,18 +114,21 @@ func (gp *Gameplay) Score() int {
 	for _, n := range gp.Die.Keeping {
 		score = score + n
 	}
-
 	return score
 }
 
 func (gp *Gameplay) ShowStats() {
+	fmt.Print("========================================================")
 	if gp.isQualified() {
+		gp.Qualified = true
 		fmt.Println("\nYou have qualified!")
+		fmt.Printf("Your final score is: %d\n", gp.Score())
 	} else {
+		gp.Qualified = false
 		fmt.Println("\nYou did not qualify.")
 	}
-	fmt.Printf("Your final score is: %d\n", gp.Score())
 	fmt.Printf("Your dice are: %v %v\n", gp.Die.Keeping, gp.Die.Qualifiers)
+	fmt.Println("========================================================")
 }
 
 func (gp *Gameplay) numQualify(num int) error {
@@ -176,20 +178,20 @@ func (gp *Gameplay) getDiceForKeeping() ([]int, error) {
 			return []int{}, err
 		}
 
-    if i == 0 {
-      fmt.Printf("roll 0 is not an option: \n")
-      continue
-    }
+		if i == 0 {
+			fmt.Printf("roll 0 is not an option: \n")
+			continue
+		}
 
-    if i > len(gp.Die.Roll) {
-      if len(gp.Die.Roll) == 1 {
-        fmt.Printf("You only have 1 die to choose from: \n")
-      } else {
-        fmt.Printf("You only have %d dice to choose from: \n", len(gp.Die.Roll))
-      }
-    } else {
-      dice = append(dice, i-1)
-    }
+		if i > len(gp.Die.Roll) {
+			if len(gp.Die.Roll) == 1 {
+				fmt.Printf("You only have 1 die to choose from: \n")
+			} else {
+				fmt.Printf("You only have %d dice to choose from: \n", len(gp.Die.Roll))
+			}
+		} else {
+			dice = append(dice, i-1)
+		}
 	}
 	return []int{}, nil
 }

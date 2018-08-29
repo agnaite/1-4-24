@@ -10,15 +10,14 @@ import (
 func main() {
 	players := []string{"Agne", "Sam", "Austin"}
 
-	playerMap := make(map[game.Player]*gameplay.Gameplay)
+	playerMap := make(map[*game.Player]*gameplay.Gameplay)
 
 	for _, player := range players {
-		playerMap[game.Player{Name: player, Balance: 10}] = gameplay.New()
+		playerMap[&game.Player{Name: player}] = gameplay.New()
 	}
 
 	game := game.Game{
 		GameplayPlayer: playerMap,
-		Pot:            0,
 	}
 
 	if err := game.Start(); err != nil {
