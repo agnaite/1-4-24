@@ -28,7 +28,7 @@ for gp in Game.Gameplays:
 */
 
 type Match struct {
-	gameplay_player Map[Player]Gameplay 
+	gameplay_player Map[Player]Gameplay
 	pot int // pot of money, default =0
 }
 
