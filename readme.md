@@ -2,14 +2,7 @@
 
 1-4-24 Dice Game in Python (with tests and type checking!)
 
-
-## Testing
-
-```sh
-make
-```
-
-## Notes
+# Notes
 
 ## Websockets Idea
 
