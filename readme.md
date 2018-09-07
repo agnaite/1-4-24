@@ -1,6 +1,6 @@
 # 1-4-24
 
-[![CircleCI](https://circleci.com/gh/audy/1-4-24.svg?style=svg)](https://circleci.com/gh/audy/1-4-24)
+[![CircleCI](https://circleci.com/gh/audy/1-4-24.svg?style=svg&circle-token=3ba693486fe49b060449f6aff2666c3449fd0db7)](https://circleci.com/gh/audy/1-4-24)
 
 1-4-24 Dice Game in Python (with tests and type checking!)
 
