@@ -2,9 +2,8 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/agnaite/1-4-24/game"
-	"github.com/agnaite/1-4-24/gameplay"
+	"github.com/audy/1-4-24/game"
+	"github.com/audy/1-4-24/gameplay"
 )
 
 func main() {
