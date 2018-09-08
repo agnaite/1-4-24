@@ -1,0 +1,66 @@
+room: {
+  "id": 3,
+  "name": "Crusty Diceboard",
+  "user": "sam",
+  "games": {
+     // games 1 and 2 are not important to current state on front end, so their objects are reduced to a simple summary for what occured - not necessary in first cut
+    "1": {                 
+      "game_id": 1, 
+      "status": "complete",
+      "winner": "agne", 
+      "high_score": 28, 
+      "players": ["sam", "austin", "agne" ], 
+      "total_pot": 3,
+      "rounds": 1,
+      "disqualifys": 0
+    },
+    "2": { 
+      "game_id": 2,
+      "status": "complete",
+      "winner": "austin", 
+      "order": [ "agne", "sam", "austin" ],
+      "high_score": 21, 
+      "players": ["agne", "austin", "sam" ], 
+      "total_pot": 4,
+      "rounds": 1,
+      "disqualifys": 1
+    },
+    "3": { 
+        "game_id": 3,   
+        "status": "active",
+        "round": 2,
+        "order": [ "austin", "agne", "sam" ],
+        "current_leader":   "austin",  // optional as it could be derived from players status
+        // "top_score": 18             // *
+        "pot": 6,
+        "bet": 1,
+        "players": {
+          "agne": {
+            "holding": [ 3,5,1 ],
+            "turn": {
+              "1": { 
+                "rolled": [2,3,5,1,4], 
+                "kept": [ 3 ] 
+              },
+              "2": { "rolled": [ 2,2,2,1 ], "kept": [ 3, 1 ] },
+              "3": { "rolled": [ 2,3,5 ], "kept": [ 3, 1, 5 ] },
+              "4": { "status": "rolling" }
+            },
+            "status" : "rolling",
+            "score": null,      // optional
+            "qualified": true   // optional
+          },
+          "austin": {
+            // turn data is no longer relevant to front end since players turn is over - just displaying general data players about turn
+            "score": 23,
+            "holding": [1,4,5,6,6,6],
+            "qualified": true,
+            "status": "complete"    
+          },
+          "sam":  {
+            "status": "waiting",
+          }
+        }
+    }
+  }
+}
