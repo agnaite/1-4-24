@@ -37,7 +37,7 @@ room: {
       "game_id": 2,
       "status": "complete",
       "winner": "austin", 
-      "order": [ "agne", "sam", "austin" ]
+      "order": [ "agne", "sam", "austin" ],
       "high_score": 21, 
       "players": ["agne", "austin", "sam" ], 
       "total_pot": 4,
