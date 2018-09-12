@@ -1,24 +1,20 @@
 package gamestate
 
 type Player struct {
-	id int
-}
-
-type Turn struct {
-	diceKept []int
-	player   Player
+	id   int
+	dice *Dice
 }
 
 type GameState struct {
-	currentPlayer Player
-	turns         []Turn
+	Players       []*Player
+	BetSize       int
+	currentPlayer *Player
 }
 
-func New() *GameState {
+func New(players []*Player, betSize int) *GameState {
 	return &GameState{
-		currentPlayer: Player{
-			id: 1,
-		},
-		turns: []Turn{},
+		Players:       players,
+		BetSize:       betSize,
+		currentPlayer: players[0],
 	}
 }

@@ -11,24 +11,20 @@ func TestGameStateInitiation(t *testing.T) {
 	// - list of current players
 	// - bet size
 	//
-	g := New()
+	players := []*Player{&Player{id: 1}, &Player{id: 2}}
+	g := New(players, 1)
 
-	if want, got := 1, g.currentPlayer.id; want != got {
-		t.Fatalf("want 0 currentPlayer, got %d", got)
+	if want, got := 2, len(g.Players); want != got {
+		t.Fatalf("want %d players, got %d players", want, got)
 	}
 
-	// g.Players should return a slice of Player structs:
-	//
-	// g.Players = [ Player{id: 123} ]
-
-	// g.Turns should return a slice of Turn structs:
-	// g.Turns = [
-	//   { player: Player{}, diceKept: []Dice }
-	// ]
+	if want, got := players[0], g.currentPlayer; want != got {
+		t.Fatalf("currentPlayer should be first player %v. Got %v", want, got)
+	}
 }
 
 func TestProcessAction(t *testing.T) {
-	g := New()
+	//g := New()
 
 	// this will initialize diceRolled with 6 random integers:
 	// g.processAction({ Player, "action": "roll" })
